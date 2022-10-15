@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div class="nav-bar">
+        <a class="show-teams" href="teams.html">TEAMS</a>
+        <a class="show-games" href="games.html">GAMES</a>
+        <a class="show-players" href="players.html">PLAYERS</a>
+    </div>
+    <div class="main-body" id="main">
+    
+    </div>
+    <script>
+        getPlayers();
+
+        function getPlayers() {
+            const requestPlayers = new XMLHttpRequest();
+            requestPlayers.open('GET', 'https://www.balldontlie.io/api/v1/players');
+            requestPlayers.send();
+            requestPlayers.addEventListener('load', function () {
+                const playersData = JSON.parse(this.responseText);
+                const playersInside = playersData.data;
+
+                for (i = 0; i < playersInside.length; i++) {
+                      
+                    console.log(playersInside[i]);
+
+                    let html = `   <div class="card">
+                            <div class="team-name-header">
+                                <div class="team-full-name">${playersInside[i].first_name}</div>
+                                <div class="team-abbreviation">${playersInside[i].last_name}</div>
+                            </div>
+                            <div class="team-info">
+                                <ul>
+                                    <li class="team-id">Team ID: ${playersInside[i].id}</li>
+                                    <li class="name">Position: ${playersInside[i].position}</li>
+                                    <li class="city">Team: ${playersInside[i].team.full_name}</li>
+                                    <li class="division">Team City: ${playersInside[i].team.city}</li>
+                                    <li class="conference">Team Division: ${playersInside[i].team.division}</li>
+                                </ul>
+                            </div>
+                        </div>`;
+                    document.querySelector('#main').insertAdjacentHTML("beforeEnd",html);
+                    html="";
+                }
+
+
+            });
+
+        }
+
+
+    </script>
+</body>
+
+</html>

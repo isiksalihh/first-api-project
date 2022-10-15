@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+
+</head>
+
+<body>
+    <div class="nav-bar">
+        <a class="show-teams" href="teams.html">TEAMS</a>
+        <a class="show-games" href="games.html">GAMES</a>
+        <a class="show-players" href="players.html">PLAYERS</a>
+    </div>
+    </div>
+    <div class="main-body" id="main">
+    
+    </div>
+    <script>
+        getGames();
+
+        function getGames() {
+            const requestGames = new XMLHttpRequest();
+            requestGames.open('GET', 'https://www.balldontlie.io/api/v1/games');
+            requestGames.send();
+            requestGames.addEventListener('load', function () {
+                const gamesData = JSON.parse(this.responseText);
+                const gamesDataInside = gamesData.data;
+
+                for (i = 0; i < gamesDataInside.length; i++) {
+                      
+                    console.log(gamesDataInside[i]);
+
+                    let html = `   <div class="card">
+                            <div class="team-name-header">
+                                <div class="team-full-name">${gamesDataInside[i].home_team.name} vs</div>
+                                <div class="team-abbreviation">${gamesDataInside[i].visitor_team.name}</div>
+                            </div>
+                            <div class="team-info">
+                                <ul>
+                                    <li class="team-id">Season: ${gamesDataInside[i].season}</li>
+                                    <li class="name">Score: ${gamesDataInside[i].home_team_score} - ${gamesDataInside[i].visitor_team_score}</li>
+                                    <li class="city">Period: ${gamesDataInside[i].period}</li>
+                                    <li class="division">Status: ${gamesDataInside[i].status}</li>
+                            
+                                </ul>
+                            </div>
+                        </div>`;
+                    document.querySelector('#main').insertAdjacentHTML("beforeEnd",html);
+                    html="";
+                }
+
+
+            });
+
+        }
+
+
+    </script>
+</body>
+
+</html>
